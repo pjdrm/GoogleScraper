@@ -177,7 +177,7 @@ class SearchEngineScrape(metaclass=abc.ABCMeta):
         self.query = ''
 
         # The default pages per keywords
-        self.pages_per_keyword = [1, ]
+        self.pages_per_keyword = [int(self.config.get('num_pages_for_keyword', 3))]
 
         # The number that shows how many searches have been done by the worker
         self.search_number = 1
@@ -189,10 +189,10 @@ class SearchEngineScrape(metaclass=abc.ABCMeta):
         self.num_results_per_page = int(self.config.get('num_results_per_page', 10))
 
         # The page where to start scraping. By default the starting page is 1.
-        if start_page_pos:
-            self.start_page_pos = 1 if start_page_pos < 1 else start_page_pos
-        else:
-            self.start_page_pos = int(self.config.get('search_offset', 1))
+        #if start_page_pos:
+        #    self.start_page_pos = 1 if start_page_pos < 1 else start_page_pos
+        #else:
+        self.start_page_pos = int(self.config.get('search_offset', 1))
 
         # The page where we are right now
         self.page_number = self.start_page_pos

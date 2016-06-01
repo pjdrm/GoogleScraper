@@ -364,7 +364,7 @@ class SearchEngineScrape(metaclass=abc.ABCMeta):
 
         if self.progress_queue:
             self.progress_queue.put(1)
-        self.cache_results()
+        #self.cache_results()
 
     def before_search(self):
         """Things that need to happen before entering the search loop."""

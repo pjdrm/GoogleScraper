@@ -16,7 +16,7 @@ impossible to launch lang scrape jobs with millions of keywords.
 
 output_format = 'stdout'
 outfile = sys.stdout
-csv_fieldnames = sorted(set(Link.__table__.columns._data.keys() + SERP.__table__.columns._data.keys()) - {'id', 'serp_id'})
+csv_fieldnames = set(Link.__table__.columns._data.keys() + SERP.__table__.columns._data.keys()) - {'id', 'serp_id'}
 
 logger = logging.getLogger(__name__)
 
@@ -117,13 +117,10 @@ def store_serp_result(serp, config):
         elif output_format == 'csv':
             outfile.write(data, serp)
         elif output_format == 'stdout':
-            '''
             if config.get('print_results') == 'summarize':
                 print(serp)
             elif config.get('print_results') == 'all':
                 pprint.pprint(data)
-            '''
-            print(serp)
 
 
 def row2dict(obj):

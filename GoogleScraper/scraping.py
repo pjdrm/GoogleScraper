@@ -64,21 +64,21 @@ Important events:
 def get_base_search_url_by_search_engine(config, search_engine_name, search_mode):
     """Retrieves the search engine base url for a specific search_engine.
 
-    This function cascades. So base urls will
+    This function cascades. So base urls in the SCRAPING section will
     be overwritten by search_engine urls in the specific mode sections.
     On the other side, if a search engine has no special url in it' corresponding
     mode, the default one from the SCRAPING config section will be loaded.
 
     Args:
         search_engine_name The name of the search engine
-        search_mode: The search mode that is used. selenium or http or http-async
+        search_mode: The search mode that is used
 
     Returns:
         The base search url.
     """
     assert search_mode in SEARCH_MODES, 'search mode "{}" is not available'.format(search_mode)
 
-    specific_base_url = config.get('{}_{}_search_url'.format(search_mode, search_engine_name), None)
+    specific_base_url = config.get('{}_search_url'.format(search_engine_name), None)
 
     if not specific_base_url:
         specific_base_url = config.get('{}_search_url'.format(search_engine_name), None)
@@ -86,10 +86,9 @@ def get_base_search_url_by_search_engine(config, search_engine_name, search_mode
     ipfile = config.get('{}_ip_file'.format(search_engine_name), '')
 
     if os.path.exists(ipfile):
-        with open(ipfile, 'rt') as file:
-            ips = file.read().split('\n')
-            random_ip = random.choice(ips)
-            return random_ip
+        ips = open(ipfile, 'rt').read().split('\n')
+        random_ip = random.choice(ips)
+        return random_ip
 
     return specific_base_url
 
@@ -177,7 +176,7 @@ class SearchEngineScrape(metaclass=abc.ABCMeta):
         self.query = ''
 
         # The default pages per keywords
-        self.pages_per_keyword = [int(self.config.get('num_pages_for_keyword', 3))]
+        self.pages_per_keyword = [1, ]
 
         # The number that shows how many searches have been done by the worker
         self.search_number = 1
@@ -189,10 +188,10 @@ class SearchEngineScrape(metaclass=abc.ABCMeta):
         self.num_results_per_page = int(self.config.get('num_results_per_page', 10))
 
         # The page where to start scraping. By default the starting page is 1.
-        #if start_page_pos:
-        #    self.start_page_pos = 1 if start_page_pos < 1 else start_page_pos
-        #else:
-        self.start_page_pos = int(self.config.get('search_offset', 1))
+        if start_page_pos:
+            self.start_page_pos = 1 if start_page_pos < 1 else start_page_pos
+        else:
+            self.start_page_pos = int(self.config.get('search_offset', 1))
 
         # The page where we are right now
         self.page_number = self.start_page_pos
@@ -364,7 +363,7 @@ class SearchEngineScrape(metaclass=abc.ABCMeta):
 
         if self.progress_queue:
             self.progress_queue.put(1)
-        #self.cache_results()
+        self.cache_results()
 
     def before_search(self):
         """Things that need to happen before entering the search loop."""

@@ -95,3 +95,17 @@ coverage.xml
 
 # Sphinx documentation
 docs/_build/
+/isVideoCacheDir/
+/docs_txt/
+/docs_urls/
+/docs_urls_all/
+/generated_queries/
+/in_docs/
+/test_queries/
+/no_txt_url.txt
+/scrapred_urls.csv
+/temp_doc.txt
+/tika-app-1.13.jar
+/url_stats.png
+/video_subs_test.txt
+/video_url.txt

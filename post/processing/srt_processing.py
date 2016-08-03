@@ -15,6 +15,7 @@ def srt2txt(in_file_path, out_file_path):
                 continue
             lin = lin.strip()
             sent += lin + " "
+            
             if lin.endswith(".") or lin.endswith("?") or lin.endswith("!"):
                 txt += sent[:-1] + "\n"
                 sent = ""
